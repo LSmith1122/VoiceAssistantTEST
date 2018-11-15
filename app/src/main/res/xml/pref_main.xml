@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_voice_assistant_key"
+        android:title="@string/voice_assistant"
+        android:textOn="@string/voice_assistant_enabled"
+        android:textOff="@string/voice_assistant_disabled"/>
+
+</PreferenceScreen>
