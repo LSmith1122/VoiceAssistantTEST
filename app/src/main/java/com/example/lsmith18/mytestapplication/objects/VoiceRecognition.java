@@ -1,8 +1,7 @@
-package com.example.lsmith18.mytestapplication.module;
+package com.example.lsmith18.mytestapplication.objects;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -15,13 +14,13 @@ import com.example.lsmith18.mytestapplication.data.RequestActionsUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoiceRecognitionModule {
+public class VoiceRecognition {
 
     private Intent intent;
     private Context mContext;
     private SpeechRecognizer mSpeechRecognizer;
 
-    public VoiceRecognitionModule(Context context, SpeechRecognizer speechRecognizer) {
+    public VoiceRecognition(Context context, SpeechRecognizer speechRecognizer) {
         mContext = context;
         mSpeechRecognizer = speechRecognizer;
     }
@@ -133,7 +132,7 @@ public class VoiceRecognitionModule {
     }
 
     private void performActionableRequest(String actionType, String input, int task) {
-        VoiceAssistantModule voiceAssistant = new VoiceAssistantModule(mContext, actionType, input, task);
+        VoiceAssistant voiceAssistant = new VoiceAssistant(mContext, actionType, input, task);
         voiceAssistant.initModule();
     }
 
@@ -159,7 +158,7 @@ public class VoiceRecognitionModule {
 //                String textBoxText = mTextBox.getText().toString() + input;
 //                mTextBox.setText(textBoxText);
 //            } else {
-//                Log.i("VoiceRecognitionModule", "Cannot locate EditText Views in Activity");
+//                Log.i("VoiceRecognition", "Cannot locate EditText Views in Activity");
 //            }
 //        }
 //    }
@@ -177,7 +176,7 @@ public class VoiceRecognitionModule {
 //            }
 //        }
 //
-//        Log.i("VoiceRecognitionModule", "RootView Child Count: " + rootView.getChildCount());
+//        Log.i("VoiceRecognition", "RootView Child Count: " + rootView.getChildCount());
 //
 //        return null;
 //    }

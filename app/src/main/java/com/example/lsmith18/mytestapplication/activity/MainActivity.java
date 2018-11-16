@@ -3,14 +3,13 @@ package com.example.lsmith18.mytestapplication.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.speech.RecognitionService;
 import android.speech.SpeechRecognizer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -19,21 +18,20 @@ import android.widget.Toast;
 
 import com.example.lsmith18.mytestapplication.R;
 import com.example.lsmith18.mytestapplication.data.RequestActionsUtils;
-import com.example.lsmith18.mytestapplication.module.VoiceRecognitionModule;
+import com.example.lsmith18.mytestapplication.objects.VoiceRecognition;
 
 import java.util.List;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText mTextBox;
     private ImageButton mSTTButton;
     private Switch mVoiceAssistantSwitch;
-    public int mSTTButtonSwitch = 0;
     private String SPACE = " ";
     private String COMMA = ", ";
 
-    VoiceRecognitionModule voiceRecognition;
+    VoiceRecognition voiceRecognition;
+    SpeechRecognizer speechRecognizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +39,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         buildDescription();
         setupVoiceRecognition();
-        setupVoiceAssistant();
+        if (isVoiceAssistantEnabled()) {
+            // TODO: Do something...
+//        setupVoiceAssistant();
+        }
+    }
+
+    private boolean isVoiceAssistantEnabled() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isVoiceAssistantEnabled = sharedPreferences.getBoolean(getString(R.string.pref_voice_assistant_key), false);
-        Toast.makeText(this, "Voice Assistant Enabled?: " + isVoiceAssistantEnabled, Toast.LENGTH_SHORT).show();
+        return sharedPreferences.getBoolean(getString(R.string.pref_voice_assistant_key), false);
     }
 
     private void setupVoiceAssistant() {
-        mVoiceAssistantSwitch = findViewById(R.id.voice_assistant_switch);
-        mVoiceAssistantSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                } else {
-
-                }
-            }
-        });
+        // TODO: Do something...
     }
 
     private void buildDescription() {
@@ -70,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 String actionItem = currentList.get(i);
                 descriptionText = descriptionText
                         + actionItem
-                        + SPACE
-                        + COMMA;
+                        + COMMA
+                        + SPACE;
             }
         }
         String finalDescription = mDescriptionTextView.getText().toString() + descriptionText
@@ -80,34 +73,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupVoiceRecognition() {
-        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        voiceRecognition = new VoiceRecognitionModule(this, speechRecognizer);
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        voiceRecognition = new VoiceRecognition(this, speechRecognizer);
         mTextBox = findViewById(R.id.textbox_edittext);
         mSTTButton = findViewById(R.id.stt_button);
         mSTTButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTextBox.setText(mTextBox.getText().toString().trim());
-                switch (mSTTButtonSwitch) {
-                    case 0:
-                        voiceRecognition.initSpeechRecognition();
-//                        incrementSTTButtonSwitch();
-                        break;
-                    case 1:
-                        voiceRecognition.stopListening();
-//                        incrementSTTButtonSwitch();
-                        break;
-                }
+                voiceRecognition.initSpeechRecognition();
             }
         });
-    }
-
-    private void incrementSTTButtonSwitch() {
-        mSTTButtonSwitch = mSTTButtonSwitch++;
-        if (mSTTButtonSwitch > 1 || mSTTButtonSwitch < 0) {
-            mSTTButtonSwitch = 0;
-            Toast.makeText(getApplicationContext(), "STT Button Activation: " + mSTTButtonSwitch, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
