@@ -1,13 +1,11 @@
 package com.example.lsmith18.mytestapplication.activity;
 
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.example.lsmith18.mytestapplication.R;
 

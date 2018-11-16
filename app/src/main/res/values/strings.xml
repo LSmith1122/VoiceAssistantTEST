@@ -7,4 +7,7 @@
     <string name="voice_assistant">Voice Assistant</string>
     <string name="voice_assistant_enabled">Enabled</string>
     <string name="voice_assistant_disabled">Disabled</string>
+    <string name="settings_title">Voice Assistant Settings</string>
+    <string name="textbox_hint">Enter Input</string>
+    <string name="description_textview_text">Use the Speech Button to enter a command.  Example commands are:</string>
 </resources>

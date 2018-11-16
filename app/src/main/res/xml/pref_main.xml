@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings_title">
 
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/pref_voice_assistant_key"
         android:title="@string/voice_assistant"
         android:textOn="@string/voice_assistant_enabled"
-        android:textOff="@string/voice_assistant_disabled"/>
+        android:textOff="@string/voice_assistant_disabled"
+        android:summary="Automatically activate Voice Assistant in background on the start of application"/>
 
 </PreferenceScreen>
