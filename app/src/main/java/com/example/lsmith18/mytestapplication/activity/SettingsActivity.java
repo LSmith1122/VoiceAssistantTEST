@@ -26,22 +26,21 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_main);
-            SwitchPreference mVoiceAssistantPref = (SwitchPreference) findPreference(getString(R.string.pref_voice_assistant_key));
+            final SwitchPreference mVoiceAssistantPref = (SwitchPreference) findPreference(getString(R.string.pref_voice_assistant_key));
             if (mVoiceAssistantPref != null) {
-                mVoiceAssistantPref.setOnPreferenceChangeListener(this);
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mVoiceAssistantPref.getContext());
-                boolean preferenceInt = sharedPreferences.getBoolean(mVoiceAssistantPref.getKey(), false);
-                onPreferenceChange(mVoiceAssistantPref, preferenceInt);
+                mVoiceAssistantPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        onPreferenceChange(mVoiceAssistantPref, mVoiceAssistantPref.isEnabled());
+                        return false;
+                    }
+                });
             }
         }
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            if (preference instanceof SwitchPreference) {
-                SwitchPreference switchPreference = (SwitchPreference) preference;
-
-            }
-            return false;
+            return true;
         }
     }
 }
