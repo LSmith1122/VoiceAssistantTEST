@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 .substring(0, (descriptionText.length() - 2));
         mDescriptionTextView.setText(finalDescription);
     }
+    // This is a test. 
 
     private void setupVoiceRecognition() {
         SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
