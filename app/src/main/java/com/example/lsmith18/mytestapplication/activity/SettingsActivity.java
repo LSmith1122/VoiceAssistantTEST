@@ -39,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             if (preference instanceof SwitchPreference) {
                 SwitchPreference switchPreference = (SwitchPreference) preference;
-                
+
             }
             return false;
         }

@@ -1,14 +1,19 @@
 package com.example.lsmith18.mytestapplication.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.speech.SpeechRecognizer;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -19,10 +24,9 @@ import android.widget.Toast;
 
 import com.example.lsmith18.mytestapplication.R;
 import com.example.lsmith18.mytestapplication.data.RequestActionsUtils;
-import com.example.lsmith18.mytestapplication.module.VoiceRecognitionModule;
+import com.example.lsmith18.mytestapplication.objects.VoiceRecognition;
 
 import java.util.List;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,18 +37,31 @@ public class MainActivity extends AppCompatActivity {
     private String SPACE = " ";
     private String COMMA = ", ";
 
-    VoiceRecognitionModule voiceRecognition;
+    VoiceRecognition voiceRecognition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buildDescription();
-        setupVoiceRecognition();
-        setupVoiceAssistant();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isVoiceAssistantEnabled = sharedPreferences.getBoolean(getString(R.string.pref_voice_assistant_key), false);
-        Toast.makeText(this, "Voice Assistant Enabled?: " + isVoiceAssistantEnabled, Toast.LENGTH_SHORT).show();
+        initVoiceRecognition();
+    }
+
+    private void initVoiceRecognition() {
+        if (hasPermissionToRecord()) {
+            // Permission is granted
+            setupVoiceRecognition();
+            setupVoiceAssistant();
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean isVoiceAssistantEnabled = sharedPreferences.getBoolean(getString(R.string.pref_voice_assistant_key), false);
+            Toast.makeText(this, "Voice Assistant Enabled?: " + isVoiceAssistantEnabled, Toast.LENGTH_SHORT).show();
+        } else {
+            // Permission is not granted
+            // TODO: Create an Alert Dialog that permits the User to grant permission to app
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PackageManager.PERMISSION_GRANTED);
+        }
     }
 
     private void setupVoiceAssistant() {
@@ -59,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean hasPermissionToRecord() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     private void buildDescription() {
@@ -81,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupVoiceRecognition() {
         SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        voiceRecognition = new VoiceRecognitionModule(this, speechRecognizer);
+        voiceRecognition = new VoiceRecognition(this, speechRecognizer);
         mTextBox = findViewById(R.id.textbox_edittext);
         mSTTButton = findViewById(R.id.stt_button);
         mSTTButton.setOnClickListener(new View.OnClickListener() {

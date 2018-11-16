@@ -1,4 +1,4 @@
-package com.example.lsmith18.mytestapplication.module;
+package com.example.lsmith18.mytestapplication.objects;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +7,9 @@ import android.net.Uri;
 
 import com.example.lsmith18.mytestapplication.R;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLDecoder;
+public class VoiceAssistant {
 
-public class VoiceAssistantModule {
-
-    // TODO: Make this module run an AsyncTask (Retrofit) to make a query and an implicit intent
+    // TODO: Make this objects run an AsyncTask (Retrofit) to make a query and an implicit intent
     // TODO: Use Retrofit for simplicity ***
 
     private Context mContext;
@@ -22,7 +18,7 @@ public class VoiceAssistantModule {
     private int mActionIntTask;
 
 
-    public VoiceAssistantModule(Context context, String actionType, String userInput, int actionIntTask) {
+    public VoiceAssistant(Context context, String actionType, String userInput, int actionIntTask) {
         mContext = context;
         mActionType = actionType;
         mUserInput = userInput;
