@@ -91,8 +91,8 @@ public class VoiceAssistant implements RecognitionListener {
         // Create keyword-activation search.
         recognizer.addKeyphraseSearch(RequestActionsUtils.KWS_SEARCH, RequestActionsUtils.KEYPHRASE);
         // Create your custom grammar-based search
-//        File menuGrammar = new File(assetsDir, "mymenu.gram");
-//        recognizer.addGrammarSearch(RequestActionsUtils.MENU_SEARCH, menuGrammar);
+        File menuGrammar = new File(assetsDir, "mymenu.gram");
+        recognizer.addGrammarSearch(RequestActionsUtils.MENU_SEARCH, menuGrammar);
     }
 
     public void cancelContinuousListening() {
