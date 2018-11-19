@@ -5,9 +5,11 @@ import java.util.List;
 
 public class RequestActionsUtils {
 
-    public static final List<String> ACTION_LIST_AWAKENINGS = Arrays.asList(
+    public static final List<String> ACTION_LIST_WAKE_UP = Arrays.asList(
             "Hey Amrock",
-            "Hey am rock"
+            "Hey am rock",
+            "Aye Amrock",
+            "A Amrock"
     );
 
     public static final List<String> ACTION_LIST_LOCATE = Arrays.asList(
@@ -17,9 +19,10 @@ public class RequestActionsUtils {
             "where am I",
             "where are we");
     public static final List<String> ACTION_LIST_QUERY = Arrays.asList(
-            "what is",
-            "what are",
-            "show me");
+            "what",
+            "how",
+            "who",
+            "why");
 
     public static final String ACTION_LOCATE = "geo:0,0?q=";
     public static final String ACTION_QUERY = "http://www.google.com/#q=";
@@ -27,4 +30,9 @@ public class RequestActionsUtils {
     public static final List<List<String>> ACTION_COMPLETE_LIST = Arrays.asList(
             ACTION_LIST_LOCATE,
             ACTION_LIST_QUERY);
+
+    public static final String KWS_SEARCH = "wakeup";
+    public static final String MENU_SEARCH = "menu";
+
+    public static final String KEYPHRASE = "hey am rock";
 }

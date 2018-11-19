@@ -10,4 +10,8 @@
     <string name="settings_title">Voice Assistant Settings</string>
     <string name="textbox_hint">Enter Input</string>
     <string name="description_textview_text">Use the Speech Button to enter a command.  Example commands are:</string>
+    <string name="snackbar_recognition_installed">Voice Recognition is installed</string>
+    <string name="snackbar_recognition_not_installed">Voice Recognition is not found</string>
+    <string name="snackbar_recognition_listener_could_not_recognize_voice">Could not recognize voice</string>
+    <string name="snackbar_recognition_no_actionable_request">No Actionable Request:</string>
 </resources>

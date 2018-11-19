@@ -2,16 +2,12 @@ package com.example.lsmith18.mytestapplication.objects;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.lsmith18.mytestapplication.data.RequestActionsUtils;
+import com.example.lsmith18.mytestapplication.listeners.ActionSpeechRecognitionListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VoiceRecognition {
@@ -28,7 +24,8 @@ public class VoiceRecognition {
     public void initSpeechRecognition() {
         startRecognizerIntent();
 
-        SpeechRecognitionListener listener = new SpeechRecognitionListener();
+        ActionSpeechRecognitionListener listener = new ActionSpeechRecognitionListener();
+        listener.setContext(mContext);
         mSpeechRecognizer.setRecognitionListener(listener);
         mSpeechRecognizer.startListening(intent);
     }
@@ -40,100 +37,9 @@ public class VoiceRecognition {
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, mContext.getPackageName());
     }
 
-    public class SpeechRecognitionListener implements RecognitionListener {
-
-        @Override
-        public void onReadyForSpeech(Bundle params) {
-            Log.i("NORTH", "onReadyForSpeech");
-        }
-
-        @Override
-        public void onBeginningOfSpeech() {
-            Log.i("NORTH", "onBeginningOfSpeech");
-        }
-
-        @Override
-        public void onRmsChanged(float rmsdB) {
-            Log.i("NORTH", "onRmsChanged");
-        }
-
-        @Override
-        public void onBufferReceived(byte[] buffer) {
-            Log.i("NORTH", "onBufferReceived");
-        }
-
-        @Override
-        public void onEndOfSpeech() {
-            Log.i("NORTH", "onEndOfSpeech");
-        }
-
-        @Override
-        public void onError(int error) {
-            String errorType = "";
-            switch (error) {
-                case 9:
-                    errorType = "ERROR_INSUFFICIENT_PERMISSIONS";
-                    break;
-                default:
-                    errorType = "UNKNOWN";
-            }
-            Log.i("NORTH", "onError: " + errorType);
-            Toast.makeText(mContext, "Error recognizing voice: " + errorType, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onResults(Bundle results) {
-            Log.i("NORTH", "onResults");
-            ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            String speechInput = "";
-            if (matches.size() != 0) {
-                speechInput = matches.get(0);
-                if (hasActionableRequest(speechInput)) {
-                    //TODO: Execute specific Action based on input
-                    String actionType = "None";
-                    int task = 0;
-                    List<List<String>> completeList = RequestActionsUtils.ACTION_COMPLETE_LIST;
-                    for (int listItemIndex = 0; listItemIndex < completeList.size(); listItemIndex++) {
-                        List<String> list = completeList.get(listItemIndex);
-                        for (int i = 0; i < list.size(); i++) {
-                            String commandString = list.get(i);
-                            if (speechInput.contains(commandString)) {
-                                if (list == RequestActionsUtils.ACTION_LIST_LOCATE) {
-                                    actionType = RequestActionsUtils.ACTION_LOCATE;
-                                    task = listItemIndex;
-                                } else {
-                                    actionType = RequestActionsUtils.ACTION_QUERY;
-                                    task = listItemIndex;
-                                }
-                            }
-                        }
-                    }
-                    // TODO: Start implicit Intent for Action
-                    performActionableRequest(actionType, speechInput, task);
-                } else {
-                    speechInput = matches.get(0);
-                    Toast.makeText(mContext, "No Actionable Request: " + speechInput, Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(mContext, "Could not recognize voice", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        public void onPartialResults(Bundle partialResults) {
-            Log.i("NORTH", "onPartialResults");
-        }
-
-        @Override
-        public void onEvent(int eventType, Bundle params) {
-            Log.i("NORTH", "onEvent");
-        }
-
-    }
-
     private void performActionableRequest(String actionType, String input, int task) {
-        VoiceAssistant voiceAssistant = new VoiceAssistant(mContext, actionType, input, task);
-        voiceAssistant.initModule();
+        CommandIntent commandIntent = new CommandIntent(mContext, actionType, input, task);
+        commandIntent.startIntent();
     }
 
     private boolean hasActionableRequest(String input) {
